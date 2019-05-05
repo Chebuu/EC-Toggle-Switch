@@ -25,7 +25,6 @@ solve.states <- function(states=c(), parms) {
     out <- solveBistable(state, parms)
     return(out)
   })
-  print(out)
   return(c(out))
 }
 
@@ -70,22 +69,22 @@ solve.g <- function(course, times) {
   return(as.data.frame(out))
 }
 course.inducer <- function(t) {
-  if((t>1 & t<5)){
-    return((t^2) * 0.5)
+  if(t>1 & t<5){
+    return(t^2 * 0.5)
   }else{
     return(0)
   }
 }
 course.iptg <- function(t) {
-  if((t>2 & t<5)){
-    return((-t/5))
+  if(t>2 & t<5){
+    return(-t/5)
   }else{
     return(0)
   }
 }
 c.iptg <- function(t) {
-  if((t>2 & t<5)){
-    return((-t*0.1))
+  if(t>2 & t<5){
+    return(-t*0.1)
   }else{
     return(0)
   }
@@ -95,32 +94,33 @@ par(mfrow=c(1,1))
 out_inducer <- solve.inducer(course=course.inducer)
 plot(out_inducer$time, out_inducer$V, col='red', type='l')  
 
+par(mfrow=c(2,2))
 out <- solve.iptg(state=state, params=params, course=c.iptg, times=seq(1,10,0.1))
 plot(out$time, out$V, type='l')
 plot(out$time, out$U, type='l')
 
 out <- solve.states(sts, pr)
-length(out)
-par(mfrow=c(2,2))
 
 #U plots
-out
 plot(out[[1]]$time, out[[1]]$U, type='l')
 for(o in c(2:length(out))){
   lines(out[[o]]$time, out[[o]]$U, col='red')
 }
+              
 #V plots
 plot(out[[1]]$time, out[[1]]$V, type='l')
 
 for(o in c(2:length(out))){
   lines(out[[o]]$time, out[[o]]$V, col='blue')
 }
+              
 #nullc lines
 plot(out[[1]]$V, out[[1]]$U, type='l', col ='blue')
 for(o in c(2:length(out))){
   lines(out[[o]]$V, out[[o]]$U, type='l', col='blue')
   
 }
+              
 ##--
 out <- solveBistable(st, pr)
 plot(out$time, out$U, type='l', col='red')
@@ -133,12 +133,14 @@ plot(out[[1]]$time, out[[1]]$U, type='l')
 for(o in c(2:length(out))){
   lines(out[[o]]$time, out[[o]]$U, col='red')
 }
+              
 #V plots
 plot(out[[1]]$time, out[[1]]$V, type='l')
 
 for(o in c(2:length(out))){
   lines(out[[o]]$time, out[[o]]$V, col='blue')
 }
+              
 #nullc lines
 plot(out[[1]]$V, out[[1]]$U, type='l', col ='blue')
 for(o in c(2:length(out))){
